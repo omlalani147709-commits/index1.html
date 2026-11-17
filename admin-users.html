@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocBook - Admin User & Appointment Management</title>
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .main-content {
+      flex: 1;
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    @media (min-width: 1024px) {
+      .dashboard-layout {
+        grid-template-columns: 280px 1fr;
+      }
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #475569;
+      transition: background-color 0.15s ease;
+    }
+
+    .sidebar-link:hover {
+      background-color: #f1f5f9;
+    }
+
+    .sidebar-link.active {
+      background-color: #0f172a;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .sidebar-link.text-rose {
+      color: #e11d48;
+    }
+
+    .sidebar-link.text-rose:hover {
+      background-color: #fff1f2;
+    }
+
+    .tab-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #475569;
+      background: transparent;
+      display: inline-block;
+    }
+
+    .tab-btn.active {
+      background-color: #18181b;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 6px 12px 6px 32px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background-color: #f8fafc;
+      color: #1e293b;
+      outline: none;
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid transparent;
+    }
+
+    .badge-emerald {
+      background-color: #ecfdf5;
+      color: #047857;
+      border-color: #a7f3d0;
+    }
+
+    .badge-amber {
+      background-color: #fffbeb;
+      color: #b45309;
+      border-color: #fde68a;
+    }
+
+    .badge-slate {
+      background-color: #f1f5f9;
+      color: #475569;
+      border-color: #e2e8f0;
+    }
+
+    .badge-blue {
+      background-color: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .badge-rose {
+      background-color: #fff1f2;
+      color: #be123c;
+      border-color: #fecdd3;
+    }
+
+    .badge-purple {
+      background-color: #faf5ff;
+      color: #7e22ce;
+      border-color: #e9d5ff;
+    }
+
+    .table-container {
+      background-color: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .table {
+      width: 100%;
+      text-align: left;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .table th {
+      background-color: #f8fafc;
+      color: #64748b;
+      font-weight: 600;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    .table td {
+      padding: 14px 20px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+
+    .footer {
+      background-color: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      padding: 24px 0;
+      margin-top: auto;
+      text-align: center;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ADMIN USER & APPOINTMENT MANAGEMENT LAYOUT -->
+  <div class="container main-content">
+    <div class="dashboard-layout">
+
+      <!-- Admin Sidebar -->
+      <aside>
+        <div class="card">
+          <div style="margin-bottom: 24px;">
+            <span
+              style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #e11d48; display: block;">Admin
+              Panel</span>
+            <p style="font-size: 12px; color: #64748b;">System Oversight</p>
+          </div>
+
+          <nav style="display: flex; flex-direction: column; gap: 6px;">
+            <a href="admin-dashboard.html" class="sidebar-link">
+              <i class="fa-solid fa-chart-line" style="width: 16px;"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="admin-doctors.html" class="sidebar-link">
+              <i class="fa-solid fa-user-doctor" style="width: 16px;"></i>
+              <span>Doctors</span>
+            </a>
+            <a href="admin-users.html" class="sidebar-link active">
+              <i class="fa-solid fa-users" style="width: 16px;"></i>
+              <span>Users</span>
+            </a>
+            <a href="admin-users.html" class="sidebar-link">
+              <i class="fa-regular fa-calendar-check" style="width: 16px;"></i>
+              <span>Appointments</span>
+            </a>
+          </nav>
+
+          <div style="padding-top: 24px; margin-top: 24px; border-top: 1px solid #f1f5f9;">
+            <a href="login.html" class="sidebar-link text-rose">
+              <i class="fa-solid fa-arrow-right-from-bracket" style="width: 16px;"></i>
+              <span>Logout</span>
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+
+        <div class="card" style="padding: 24px;">
+          <h1 style="font-size: 22px; font-weight: 700; color: #0f172a;">User & Appointment Management</h1>
+          <p style="font-size: 12px; color: #64748b; margin-top: 2px;">Manage system users and view appointment
+            schedules.</p>
+
+          <!-- Tabs: Users & Appointments -->
+          <div
+            style="display: flex; align-items: center; gap: 8px; margin-top: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">
+            <a href="admin-users.html" class="tab-btn active">
+              Users
+            </a>
+            <a href="admin-users.html" class="tab-btn">
+              Appointments
+            </a>
+          </div>
+        </div>
+
+        <!-- USERS TAB -->
+        <div class="table-container">
+          <div
+            style="padding: 20px; border-bottom: 1px solid #f1f5f9; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+            <h2 style="font-weight: 700; color: #0f172a; font-size: 14px;">Registered Users</h2>
+            <div style="position: relative; width: 100%; max-width: 256px;">
+              <i class="fa-solid fa-magnifying-glass"
+                style="position: absolute; left: 12px; top: 10px; color: #94a3b8; font-size: 12px;"></i>
+              <input type="text" placeholder="Search users..." class="form-control">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Eleanor Shellstrop -->
+                <tr>
+                  <td style="font-weight: 600; color: #0f172a;">Eleanor Shellstrop</td>
+                  <td style="color: #64748b;">eleanor@example.com</td>
+                  <td style="color: #64748b;">(555) 123-4567</td>
+                  <td>
+                    <span class="badge badge-emerald">Active</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="#" style="color: #0d9488; font-weight: 500;">Edit</a>
+                  </td>
+                </tr>
+                <!-- Chidi Anagonye -->
+                <tr>
+                  <td style="font-weight: 600; color: #0f172a;">Chidi Anagonye</td>
+                  <td style="color: #64748b;">chidi@example.com</td>
+                  <td style="color: #64748b;">(555) 987-6543</td>
+                  <td>
+                    <span class="badge badge-emerald">Active</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="#" style="color: #0d9488; font-weight: 500;">Edit</a>
+                  </td>
+                </tr>
+                <!-- Tahani Al-Jamil -->
+                <tr>
+                  <td style="font-weight: 600; color: #0f172a;">Tahani Al-Jamil</td>
+                  <td style="color: #64748b;">tahani@example.com</td>
+                  <td style="color: #64748b;">(555) 456-7890</td>
+                  <td>
+                    <span class="badge badge-amber">Pending</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="#" style="color: #0d9488; font-weight: 500;">Edit</a>
+                  </td>
+                </tr>
+                <!-- Jason Mendoza -->
+                <tr>
+                  <td style="font-weight: 600; color: #0f172a;">Jason Mendoza</td>
+                  <td style="color: #64748b;">jason@example.com</td>
+                  <td style="color: #64748b;">(555) 789-0123</td>
+                  <td>
+                    <span class="badge badge-slate">Inactive</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="#" style="color: #0d9488; font-weight: 500;">Edit</a>
+                  </td>
+                </tr>
+                <!-- Sophia Martinez -->
+                <tr>
+                  <td style="font-weight: 600; color: #0f172a;">Sophia Martinez</td>
+                  <td style="color: #64748b;">sophia@example.com</td>
+                  <td style="color: #64748b;">(555) 321-6549</td>
+                  <td>
+                    <span class="badge badge-emerald">Active</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="#" style="color: #0d9488; font-weight: 500;">Edit</a>
+                  </td>
+                </tr>
+                <!-- James Taylor -->
+                <tr>
+                  <td style="font-weight: 600; color: #0f172a;">James Taylor</td>
+                  <td style="color: #64748b;">james@example.com</td>
+                  <td style="color: #64748b;">(555) 852-9630</td>
+                  <td>
+                    <span class="badge badge-emerald">Active</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="#" style="color: #0d9488; font-weight: 500;">Edit</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      &copy; 2026 DocBook Appointment System. Academic Project.
+    </div>
+  </footer>
+
+</body>
+
+</html>

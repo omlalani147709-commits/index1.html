@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocBook - Find Doctors</title>
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, input, select {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .main-content {
+      flex: 1;
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .navbar-content {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background-color: #0d9488;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: #0f172a;
+    }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 24px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    @media (min-width: 768px) {
+      .nav-links { display: flex; }
+    }
+
+    .nav-link {
+      color: #475569;
+    }
+
+    .nav-link.active {
+      color: #0d9488;
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-dark {
+      background-color: #18181b;
+      color: #ffffff;
+    }
+
+    .btn-light {
+      background-color: #f1f5f9;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border-color: #cbd5e1;
+      color: #1e293b;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    /* Cards */
+    .card {
+      background-color: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background-color: #f8fafc;
+      color: #1e293b;
+      outline: none;
+      font-size: 12px;
+    }
+
+    .quick-pill {
+      padding: 4px 12px;
+      border-radius: 9999px;
+      border: 1px solid #e2e8f0;
+      background-color: #ffffff;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 500;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .doctor-card {
+      background-color: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: box-shadow 0.2s ease;
+    }
+
+    @media (min-width: 768px) {
+      .doctor-card {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .doctor-card:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid transparent;
+    }
+
+    .badge-teal { background-color: #f0fdf4; color: #0f766e; border-color: #99f6e4; }
+    .badge-blue { background-color: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    .badge-amber { background-color: #fffbeb; color: #b45309; border-color: #fde68a; }
+    .badge-purple { background-color: #faf5ff; color: #7e22ce; border-color: #e9d5ff; }
+
+    .footer {
+      background-color: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      padding: 40px 0;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .footer-content { flex-direction: row; }
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .copyright {
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #f1f5f9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PUBLIC HEADER / NAVBAR -->
+  <header class="navbar">
+    <div class="container navbar-content">
+      <div style="display: flex; align-items: center; gap: 32px;">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <span class="logo-text">DocBook</span>
+        </a>
+
+        <nav class="nav-links">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="doctors.html" class="nav-link active">Doctors</a>
+          <a href="patient-dashboard.html" class="nav-link">Appointments</a>
+        </nav>
+      </div>
+
+      <div class="nav-actions">
+        <a href="patient-dashboard.html" class="btn btn-light btn-sm">
+          <i class="fa-regular fa-user"></i> Patient Portal
+        </a>
+        <a href="admin-dashboard.html" class="btn btn-light btn-sm">
+          <i class="fa-solid fa-shield-halved"></i> Admin Panel
+        </a>
+        <a href="login.html" class="btn btn-dark">
+          Login
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN FIND DOCTORS SECTION -->
+  <main class="main-content">
+    <div class="container">
+      <!-- Breadcrumb & Header -->
+      <div style="margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #94a3b8; margin-bottom: 4px;">
+          <a href="index.html">DocBook</a>
+          <i class="fa-solid fa-chevron-right" style="font-size: 9px;"></i>
+          <span style="color: #1e293b; font-weight: 500;">Find Doctors</span>
+        </div>
+        <h1 style="font-size: 24px; font-weight: 700; color: #0f172a;">Find Doctors</h1>
+        <p style="font-size: 12px; color: #64748b;">Search and book appointments with specialized medical professionals.</p>
+      </div>
+
+      <!-- Filter & Search Card -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; align-items: center;">
+          <!-- Search by Name/Symptom -->
+          <div style="grid-column: span 12; position: relative;">
+            <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; top: 14px; color: #94a3b8; font-size: 12px;"></i>
+            <input id="doc-search-input" type="text" placeholder="Doctor name, symptom, or condition..." class="form-control" style="padding-left: 40px;" oninput="filterDoctors()">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; align-items: center; margin-top: 12px;">
+          <!-- Specialization select -->
+          <div style="grid-column: span 12;">
+            <select id="doc-specialty-select" onchange="filterDoctors()" class="form-control" style="color: #334155;">
+              <option value="">All Specialties</option>
+              <option value="Cardiologist">Cardiology</option>
+              <option value="Neurologist">Neurology</option>
+              <option value="Dermatologist">Dermatology</option>
+              <option value="Orthopedic Surgeon">Orthopedic Surgeon</option>
+              <option value="General Physician">General Physician</option>
+              <option value="Dentist">Dentist</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top: 12px;">
+          <button type="button" onclick="filterDoctors()" class="btn btn-dark" style="width: 100%;">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search Doctors</span>
+          </button>
+        </div>
+
+        <!-- Quick Filters Pills -->
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; padding-top: 12px; border-top: 1px solid #f1f5f9; font-size: 12px;">
+          <span style="color: #94a3b8; font-weight: 500; margin-right: 4px; font-size: 11px;">Quick Filters:</span>
+          <span class="quick-pill">Available Today</span>
+          <span class="quick-pill">Highly Rated</span>
+          <span class="quick-pill">Video Consult</span>
+        </div>
+      </div>
+
+      <!-- Doctor Cards List -->
+      <div id="doctors-list" style="display: flex; flex-direction: column; gap: 16px;">
+
+        <!-- 1. Dr. Sarah Jenkins -->
+        <div class="doctor-card" data-name="Sarah Jenkins" data-specialty="General Physician">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200"
+              alt="Dr. Sarah Jenkins" style="width: 80px; height: 80px; border-radius: 16px; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <h3 style="font-weight: 700; color: #0f172a; font-size: 16px;">Dr. Sarah Jenkins</h3>
+                <span class="badge badge-teal">General Physician</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; margin-top: 4px; flex-wrap: wrap;">
+                <span style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 500;">
+                  <i class="fa-solid fa-star" style="font-size: 12px;"></i> 4.8 <span style="color: #94a3b8; font-weight: 400;">(124 reviews)</span>
+                </span>
+                <span>•</span>
+                <span><i class="fa-solid fa-briefcase" style="color: #94a3b8; margin-right: 4px;"></i>15 years experience</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-location-dot" style="color: #94a3b8; margin-right: 4px;"></i>Downtown Medical Center</span>
+              </div>
+              <div style="font-size: 12px; color: #334155; font-weight: 600; margin-top: 8px;">
+                <span style="color: #0f172a; font-size: 14px; font-weight: 700;"> ₹1550</span> Consultation Fee
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px; justify-content: flex-end;">
+            <a href="doctor-profile.html?id=sarah-jenkins" class="btn btn-outline">
+              View Profile
+            </a>
+            <a href="book-appointment.html?doc=Dr.+Sarah+Jenkins&spec=General+Physician&fee=150" class="btn btn-dark">
+              Book Now
+            </a>
+          </div>
+        </div>
+
+        <!-- 2. Dr. Michael Chen -->
+        <div class="doctor-card" data-name="Michael Chen" data-specialty="Cardiologist">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=200"
+              alt="Dr. Michael Chen" style="width: 80px; height: 80px; border-radius: 16px; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <h3 style="font-weight: 700; color: #0f172a; font-size: 16px;">Dr. Michael Chen</h3>
+                <span class="badge badge-blue">Cardiologist</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; margin-top: 4px; flex-wrap: wrap;">
+                <span style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 500;">
+                  <i class="fa-solid fa-star" style="font-size: 12px;"></i> 4.9 <span style="color: #94a3b8; font-weight: 400;">(89 reviews)</span>
+                </span>
+                <span>•</span>
+                <span><i class="fa-solid fa-briefcase" style="color: #94a3b8; margin-right: 4px;"></i>20 years experience</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-location-dot" style="color: #94a3b8; margin-right: 4px;"></i>Westside Neuro Clinic</span>
+              </div>
+              <div style="font-size: 12px; color: #334155; font-weight: 600; margin-top: 8px;">
+                <span style="color: #0f172a; font-size: 14px; font-weight: 700;"> ₹1800</span> Consultation Fee
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px; justify-content: flex-end;">
+            <a href="doctor-profile.html?id=michael-chen" class="btn btn-outline">
+              View Profile
+            </a>
+            <a href="book-appointment.html?doc=Dr.+Michael+Chen&spec=Cardiologist&fee=180" class="btn btn-dark">
+              Book Now
+            </a>
+          </div>
+        </div>
+
+        <!-- 3. Dr. Emily Torres -->
+        <div class="doctor-card" data-name="Emily Torres" data-specialty="Dentist">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <img src="https://images.unsplash.com/photo-1594824813684-256515c0e447?auto=format&fit=crop&q=80&w=200"
+              alt="Dr. Emily Torres" style="width: 80px; height: 80px; border-radius: 16px; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <h3 style="font-weight: 700; color: #0f172a; font-size: 16px;">Dr. Emily Torres</h3>
+                <span class="badge badge-amber">Dentist</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; margin-top: 4px; flex-wrap: wrap;">
+                <span style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 500;">
+                  <i class="fa-solid fa-star" style="font-size: 12px;"></i> 4.7 <span style="color: #94a3b8; font-weight: 400;">(210 reviews)</span>
+                </span>
+                <span>•</span>
+                <span><i class="fa-solid fa-briefcase" style="color: #94a3b8; margin-right: 4px;"></i>8 years experience</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-location-dot" style="color: #94a3b8; margin-right: 4px;"></i>SkinCare Associates</span>
+              </div>
+              <div style="font-size: 12px; color: #334155; font-weight: 600; margin-top: 8px;">
+                <span style="color: #0f172a; font-size: 14px; font-weight: 700;"> ₹1200</span> Consultation Fee
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px; justify-content: flex-end;">
+            <a href="doctor-profile.html?id=emily-torres" class="btn btn-outline">
+              View Profile
+            </a>
+            <a href="book-appointment.html?doc=Dr.+Emily+Torres&spec=Dentist&fee=120" class="btn btn-dark">
+              Book Now
+            </a>
+          </div>
+        </div>
+
+        <!-- 4. Dr. Robert Hayes -->
+        <div class="doctor-card" data-name="Robert Hayes" data-specialty="Dermatologist">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200"
+              alt="Dr. Robert Hayes" style="width: 80px; height: 80px; border-radius: 16px; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <h3 style="font-weight: 700; color: #0f172a; font-size: 16px;">Dr. Robert Hayes</h3>
+                <span class="badge badge-purple">Dermatologist</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; margin-top: 4px; flex-wrap: wrap;">
+                <span style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 500;">
+                  <i class="fa-solid fa-star" style="font-size: 12px;"></i> 4.7 <span style="color: #94a3b8; font-weight: 400;">(150 reviews)</span>
+                </span>
+                <span>•</span>
+                <span><i class="fa-solid fa-briefcase" style="color: #94a3b8; margin-right: 4px;"></i>20+ years experience</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-location-dot" style="color: #94a3b8; margin-right: 4px;"></i>City General Hospital</span>
+              </div>
+              <div style="font-size: 12px; color: #334155; font-weight: 600; margin-top: 8px;">
+                <span style="color: #0f172a; font-size: 14px; font-weight: 700;"> ₹2000</span> Consultation Fee
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px; justify-content: flex-end;">
+            <a href="doctor-profile.html?id=robert-hayes" class="btn btn-outline">
+              View Profile
+            </a>
+            <a href="book-appointment.html?doc=Dr.+Robert+Hayes&spec=Dermatologist&fee=200" class="btn btn-dark">
+              Book Now
+            </a>
+          </div>
+        </div>
+
+        <!-- 5. Dr. Marcus Vance -->
+        <div class="doctor-card" data-name="Marcus Vance" data-specialty="Neurologist">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=200"
+              alt="Dr. Marcus Vance" style="width: 80px; height: 80px; border-radius: 16px; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <h3 style="font-weight: 700; color: #0f172a; font-size: 16px;">Dr. Marcus Vance</h3>
+                <span class="badge badge-blue">Neurologist</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; margin-top: 4px; flex-wrap: wrap;">
+                <span style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 500;">
+                  <i class="fa-solid fa-star" style="font-size: 12px;"></i> 4.9 <span style="color: #94a3b8; font-weight: 400;">(165 reviews)</span>
+                </span>
+                <span>•</span>
+                <span><i class="fa-solid fa-briefcase" style="color: #94a3b8; margin-right: 4px;"></i>14 years experience</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-location-dot" style="color: #94a3b8; margin-right: 4px;"></i>St. Jude Medical Institute</span>
+              </div>
+              <div style="font-size: 12px; color: #334155; font-weight: 600; margin-top: 8px;">
+                <span style="color: #0f172a; font-size: 14px; font-weight: 700;"> ₹2900</span> Consultation Fee
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px; justify-content: flex-end;">
+            <a href="doctor-profile.html?id=marcus-vance" class="btn btn-outline">
+              View Profile
+            </a>
+            <a href="book-appointment.html?doc=Dr.+Marcus+Vance&spec=Neurologist&fee=190" class="btn btn-dark">
+              Book Now
+            </a>
+          </div>
+        </div>
+
+        <!-- 6. Dr. Elena Patel -->
+        <div class="doctor-card" data-name="Elena Patel" data-specialty="Orthopedic Surgeon">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200"
+              alt="Dr. Elena Patel" style="width: 80px; height: 80px; border-radius: 16px; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <h3 style="font-weight: 700; color: #0f172a; font-size: 16px;">Dr. Elena Patel</h3>
+                <span class="badge badge-purple">Orthopedic Surgeon</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; margin-top: 4px; flex-wrap: wrap;">
+                <span style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 500;">
+                  <i class="fa-solid fa-star" style="font-size: 12px;"></i> 4.8 <span style="color: #94a3b8; font-weight: 400;">(142 reviews)</span>
+                </span>
+                <span>•</span>
+                <span><i class="fa-solid fa-briefcase" style="color: #94a3b8; margin-right: 4px;"></i>10 years experience</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-location-dot" style="color: #94a3b8; margin-right: 4px;"></i>OrthoHealth Care</span>
+              </div>
+              <div style="font-size: 12px; color: #334155; font-weight: 600; margin-top: 8px;">
+                <span style="color: #0f172a; font-size: 14px; font-weight: 700;"> ₹1600</span> Consultation Fee
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px; justify-content: flex-end;">
+            <a href="doctor-profile.html?id=elena-patel" class="btn btn-outline">
+              View Profile
+            </a>
+            <a href="book-appointment.html?doc=Dr.+Elena+Patel&spec=Orthopedic+Surgeon&fee=160" class="btn btn-dark">
+              Book Now
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Pagination -->
+      <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 32px;">
+        <a href="#" class="btn btn-dark btn-sm" style="width: 32px; height: 32px; padding: 0;">1</a>
+        <a href="#" class="btn btn-outline btn-sm" style="width: 32px; height: 32px; padding: 0;">2</a>
+        <a href="#" class="btn btn-outline btn-sm" style="width: 32px; height: 32px; padding: 0;">3</a>
+        <span style="color: #94a3b8; padding: 0 4px; font-size: 12px;">...</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- PUBLIC FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="width: 28px; height: 28px; border-radius: 8px; background-color: #0d9488; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <span style="font-weight: 800; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; color: #0f172a;">DOCBOOK</span>
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Support</a>
+        </div>
+      </div>
+      <div class="copyright">
+        &copy; 2026 DocBook Appointment System. Academic Project.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const search = (params.get('search') || '').toLowerCase();
+      const specialty = params.get('specialty') || '';
+
+      if (search) document.getElementById('doc-search-input').value = search;
+      if (specialty) document.getElementById('doc-specialty-select').value = specialty;
+
+      filterDoctors();
+    });
+
+    function filterDoctors() {
+      const search = (document.getElementById('doc-search-input').value || '').toLowerCase().trim();
+      const specialty = document.getElementById('doc-specialty-select').value;
+      const cards = document.querySelectorAll('.doctor-card');
+
+      cards.forEach(card => {
+        const name = (card.getAttribute('data-name') || '').toLowerCase();
+        const spec = card.getAttribute('data-specialty') || '';
+        const matchSearch = !search || name.includes(search) || spec.toLowerCase().includes(search);
+        const matchSpec = !specialty || spec === specialty;
+
+        card.style.display = (matchSearch && matchSpec) ? 'flex' : 'none';
+      });
+    }
+  </script>
+</body>
+
+</html>

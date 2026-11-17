@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocBook - Book Appointment</title>
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .container-narrow {
+      width: 100%;
+      max-width: 896px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .main-content {
+      flex: 1;
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .navbar-content {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background-color: #0d9488;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: #0f172a;
+    }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 24px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    @media (min-width: 768px) {
+      .nav-links {
+        display: flex;
+      }
+    }
+
+    .nav-link {
+      color: #475569;
+    }
+
+    .nav-link.active {
+      color: #0d9488;
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-dark {
+      background-color: #18181b;
+      color: #ffffff;
+    }
+
+    .btn-light {
+      background-color: #f1f5f9;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      padding: 24px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background-color: #ffffff;
+      color: #1e293b;
+      outline: none;
+      font-size: 12px;
+    }
+
+    .form-control:focus {
+      border-color: #0d9488;
+    }
+
+    .slot-btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background-color: #ffffff;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      display: inline-block;
+    }
+
+    .slot-btn.active {
+      background-color: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 12px;
+    }
+
+    .grid-6 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    @media (min-width: 640px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid-6 {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    .footer {
+      background-color: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      padding: 40px 0;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .footer-content {
+        flex-direction: row;
+      }
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .copyright {
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #f1f5f9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PUBLIC HEADER / NAVBAR -->
+  <header class="navbar">
+    <div class="container navbar-content">
+      <div style="display: flex; align-items: center; gap: 32px;">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <span class="logo-text">DocBook</span>
+        </a>
+
+        <nav class="nav-links">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="doctors.html" class="nav-link">Doctors</a>
+          <a href="patient-dashboard.html" class="nav-link active">Appointments</a>
+        </nav>
+      </div>
+
+      <div class="nav-actions">
+        <a href="patient-dashboard.html" class="btn btn-light btn-sm">
+          <i class="fa-regular fa-user"></i> Patient Portal
+        </a>
+        <a href="admin-dashboard.html" class="btn btn-light btn-sm">
+          <i class="fa-solid fa-shield-halved"></i> Admin Panel
+        </a>
+        <a href="login.html" class="btn btn-dark">
+          Login
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN BOOK APPOINTMENT CONTENT -->
+  <main class="main-content">
+    <div class="container-narrow">
+
+      <div style="margin-bottom: 24px;">
+        <h1 style="font-size: 24px; font-weight: 700; color: #0f172a;">Book Appointment</h1>
+        <p style="font-size: 12px; color: #64748b;">Complete the details below to secure your consultation.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px;">
+
+        <!-- Left Column: Selected Doctor Card -->
+        <div style="grid-column: span 12;">
+          <div class="card">
+            <h2
+              style="font-size: 12px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">
+              Selected Doctor</h2>
+
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+              <img id="summary-doc-img"
+                src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200"
+                alt="Doctor"
+                style="width: 56px; height: 56px; border-radius: 12px; object-fit: cover; border: 1px solid #e2e8f0;">
+              <div>
+                <h3 id="summary-doc-name" style="font-weight: 700; color: #0f172a; font-size: 14px;">Dr. Sarah Jenkins
+                </h3>
+                <p id="summary-doc-spec" style="font-size: 12px; color: #0d9488; font-weight: 500;">Cardiology
+                  Specialist</p>
+                <div
+                  style="display: flex; align-items: center; gap: 4px; font-size: 11px; color: #f59e0b; margin-top: 2px;">
+                  <i class="fa-solid fa-star"></i>
+                  <span style="font-weight: 700; color: #0f172a;">4.9</span>
+                  <span style="color: #94a3b8;">(120 reviews)</span>
+                </div>
+              </div>
+            </div>
+
+            <div
+              style="display: flex; flex-direction: column; gap: 12px; padding-top: 12px; border-top: 1px solid #f1f5f9; font-size: 12px;">
+              <div>
+                <span style="color: #94a3b8; display: block; font-weight: 500;">Location</span>
+                <span style="color: #334155; font-weight: 600;">City General Hospital, Room 402, North Wing</span>
+              </div>
+              <div>
+                <span style="color: #94a3b8; display: block; font-weight: 500;">Consultation Fee</span>
+                <span id="summary-doc-fee" style="color: #0f172a; font-weight: 700; font-size: 14px;">$150.00 <span
+                    style="font-size: 11px; font-weight: 400; color: #64748b;">(Standard Checkup)</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Form -->
+        <div style="grid-column: span 12;">
+          <form action="patient-dashboard.html" method="GET" class="card"
+            style="display: flex; flex-direction: column; gap: 24px; padding: 28px;">
+
+            <!-- Select Date & Time -->
+            <div>
+              <h3
+                style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #0f172a; margin-bottom: 12px;">
+                Select Date & Time</h3>
+
+              <div class="form-group" style="margin-bottom: 16px;">
+                <label class="form-label">Date</label>
+                <input id="booking-date" type="date" value="2024-05-14" required class="form-control"
+                  style="max-width: 240px;">
+              </div>
+
+              <div>
+                <label class="form-label" style="margin-bottom: 8px;">Available Times</label>
+                <div class="grid-6">
+                  <a href="#" class="slot-btn">09:00 AM</a>
+                  <a href="#" class="slot-btn">09:30 AM</a>
+                  <a href="#" class="slot-btn active">10:00 AM</a>
+                  <a href="#" class="slot-btn">10:30 AM</a>
+                  <a href="#" class="slot-btn">11:00 AM</a>
+                  <a href="#" class="slot-btn">11:30 AM</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Patient Information -->
+            <div style="padding-top: 16px; border-top: 1px solid #f1f5f9;">
+              <h3
+                style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #0f172a; margin-bottom: 12px;">
+                Patient Information</h3>
+
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">Full Name</label>
+                  <input id="patient-name" type="text" value="Jane Doe" required class="form-control">
+                </div>
+
+                <div class="grid-2">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Email Address</label>
+                    <input id="patient-email" type="email" value="jane.doe@example.com" required class="form-control">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Phone Number</label>
+                    <input id="patient-phone" type="tel" value="(555) 123-4567" required class="form-control">
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">Reason for Visit</label>
+                  <textarea id="patient-reason" rows="3"
+                    placeholder="Briefly describe your symptoms or reason for consultation..." class="form-control"
+                    style="resize: vertical;"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <div style="padding-top: 8px;">
+              <button type="submit" class="btn btn-dark" style="width: 100%; padding: 12px;">
+                Confirm Appointment
+              </button>
+              <p style="text-align: center; font-size: 11px; color: #94a3b8; margin-top: 8px;">
+                By confirming, you agree to our Terms of Service.
+              </p>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- PUBLIC FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div
+            style="width: 28px; height: 28px; border-radius: 8px; background-color: #0d9488; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <span
+            style="font-weight: 800; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; color: #0f172a;">DOCBOOK</span>
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Support</a>
+        </div>
+      </div>
+      <div class="copyright">
+        &copy; 2026 DocBook Appointment System. Academic Project.
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocBook - Dr. Sarah Jenkins Profile</title>
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .container-narrow {
+      width: 100%;
+      max-width: 896px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .main-content {
+      flex: 1;
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .navbar-content {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background-color: #0d9488;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: #0f172a;
+    }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 24px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    @media (min-width: 768px) {
+      .nav-links {
+        display: flex;
+      }
+    }
+
+    .nav-link {
+      color: #475569;
+    }
+
+    .nav-link.active {
+      color: #0d9488;
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-dark {
+      background-color: #18181b;
+      color: #ffffff;
+    }
+
+    .btn-light {
+      background-color: #f1f5f9;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 24px;
+      border: 1px solid #e2e8f0;
+      padding: 32px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-amber {
+      background-color: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fde68a;
+      border-radius: 9999px;
+    }
+
+    .badge-slate {
+      background-color: #f1f5f9;
+      color: #475569;
+    }
+
+    .date-btn {
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background-color: #ffffff;
+      color: #334155;
+      text-align: center;
+      display: inline-block;
+    }
+
+    .date-btn.active {
+      border: 2px solid #0f172a;
+      background-color: #0f172a;
+      color: #ffffff;
+    }
+
+    .time-btn {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background-color: #ffffff;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      display: inline-block;
+    }
+
+    .time-btn.active {
+      border-color: #0f172a;
+      background-color: #0f172a;
+      color: #ffffff;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 16px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid-4 {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+
+    .footer {
+      background-color: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      padding: 40px 0;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .footer-content {
+        flex-direction: row;
+      }
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .copyright {
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #f1f5f9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PUBLIC HEADER / NAVBAR -->
+  <header class="navbar">
+    <div class="container navbar-content">
+      <div style="display: flex; align-items: center; gap: 32px;">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <span class="logo-text">DocBook</span>
+        </a>
+
+        <nav class="nav-links">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="doctors.html" class="nav-link active">Doctors</a>
+          <a href="patient-dashboard.html" class="nav-link">Appointments</a>
+        </nav>
+      </div>
+
+      <div class="nav-actions">
+        <a href="patient-dashboard.html" class="btn btn-light btn-sm">
+          <i class="fa-regular fa-user"></i> Patient Portal
+        </a>
+        <a href="admin-dashboard.html" class="btn btn-light btn-sm">
+          <i class="fa-solid fa-shield-halved"></i> Admin Panel
+        </a>
+        <a href="login.html" class="btn btn-dark">
+          Login
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN DOCTOR PROFILE CONTENT -->
+  <main class="main-content">
+    <div class="container-narrow">
+
+      <!-- Back Link -->
+      <div style="margin-bottom: 16px;">
+        <a href="doctors.html"
+          style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: #64748b;">
+          <i class="fa-solid fa-arrow-left" style="font-size: 11px;"></i> Back to Doctors list
+        </a>
+      </div>
+
+      <!-- Doctor Hero Card -->
+      <div class="card">
+        <div
+          style="display: flex; flex-direction: column; align-items: center; gap: 24px; border-bottom: 1px solid #f1f5f9; padding-bottom: 24px;">
+          <img id="doc-img" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400"
+            alt="Doctor Photo"
+            style="width: 144px; height: 144px; border-radius: 16px; object-fit: cover; border: 2px solid #f1f5f9; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);">
+
+          <div style="flex: 1; text-align: center; width: 100%;">
+            <div
+              style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 8px;">
+              <div>
+                <h1 id="doc-name" style="font-size: 24px; font-weight: 700; color: #0f172a;">Dr. Sarah Jenkins</h1>
+                <p id="doc-specialty" style="color: #0d9488; font-weight: 600; font-size: 12px; margin-top: 2px;">Cardiology Specialist</p>
+              </div>
+              <div class="badge badge-amber" style="padding: 4px 12px; font-weight: 700;">
+                <i class="fa-solid fa-star" style="color: #fbbf24;"></i>
+                <span id="doc-rating">4.9</span>
+                <span id="doc-reviews-count" style="color: #64748b; font-weight: 400;">(128)</span>
+              </div>
+            </div>
+
+            <!-- Badges -->
+            <div
+              style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; font-size: 12px; color: #475569;">
+              <span id="doc-degrees" class="badge badge-slate">MD, FACC</span>
+              <span id="doc-exp" class="badge badge-slate"><i class="fa-solid fa-clock"
+                  style="margin-right: 4px; color: #94a3b8;"></i>15+ Years Exp.</span>
+              <span id="doc-languages" class="badge badge-slate"><i class="fa-solid fa-language"
+                  style="margin-right: 4px; color: #94a3b8;"></i>English, Spanish</span>
+            </div>
+
+            <!-- Location info -->
+            <div style="margin-top: 12px; font-size: 12px; color: #64748b;">
+              <i class="fa-solid fa-location-dot" style="color: #0d9488; margin-right: 4px;"></i>
+              <span id="doc-location">Downtown Medical Center, Suite 402</span>
+            </div>
+
+            <!-- Price & CTA -->
+            <div
+              style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 20px; padding-top: 16px; border-top: 1px solid #f1f5f9;">
+              <div style="text-align: left;">
+                <span
+                  style="font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; display: block;">CONSULTATION
+                  FEE</span>
+                <span id="doc-fee" style="font-size: 24px; font-weight: 800; color: #0f172a;">₹1550</span>
+              </div>
+              <a id="doc-book-btn" href="book-appointment.html?doc=Dr.+Sarah+Jenkins&spec=Cardiology+Specialist&fee=150"
+                class="btn btn-dark" style="padding: 10px 24px;">
+                Book Appointment
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- About -->
+        <div style="padding-top: 24px;">
+          <h2
+            style="font-size: 12px; font-weight: 700; color: #0f172a; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+            About</h2>
+          <p id="doc-about" style="font-size: 13px; color: #475569; line-height: 1.6;">
+            Dr. Jenkins is a board certified cardiologist with extensive experience in preventative cardiovascular
+            medicine and non-invasive diagnostic imaging. She is dedicated to providing patient centered care, focusing
+            on lifestyle modifications alongside evidence-based medical treatments to ensure long-term heart health.
+          </p>
+        </div>
+      </div>
+
+      <!-- Available Appointments Section -->
+      <div class="card">
+        <h2 style="font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 16px;">Available Appointments</h2>
+
+        <!-- Date tabs -->
+        <div id="date-tabs-container" style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+          <button type="button" class="date-btn active" onclick="selectDate('MON', this)">
+            <div style="font-size: 10px; text-transform: uppercase; font-weight: 600;">MON</div>
+            <div style="font-size: 14px; font-weight: 700;">12</div>
+          </button>
+          <button type="button" class="date-btn" onclick="selectDate('TUE', this)">
+            <div style="font-size: 10px; text-transform: uppercase; font-weight: 600;">TUE</div>
+            <div style="font-size: 14px; font-weight: 700;">13</div>
+          </button>
+          <button type="button" class="date-btn" onclick="selectDate('WED', this)">
+            <div style="font-size: 10px; text-transform: uppercase; font-weight: 600;">WED</div>
+            <div style="font-size: 14px; font-weight: 700;">14</div>
+          </button>
+        </div>
+
+        <!-- Time Slots -->
+        <div id="time-slots-container" class="grid-4">
+          <!-- Time slots rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Patient Reviews Section -->
+      <div class="card">
+        <h2 style="font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 16px;">Patient Reviews</h2>
+
+        <div id="patient-reviews-container" class="grid-2">
+          <!-- Patient reviews rendered dynamically -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- PUBLIC FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div
+            style="width: 28px; height: 28px; border-radius: 8px; background-color: #0d9488; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <span
+            style="font-weight: 800; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; color: #0f172a;">DOCBOOK</span>
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Support</a>
+        </div>
+      </div>
+      <div class="copyright">
+        &copy; 2026 DocBook Appointment System. Academic Project.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const doctorsData = {
+      "sarah-jenkins": {
+        id: "sarah-jenkins",
+        name: "Dr. Sarah Jenkins",
+        specialty: "General Physician",
+        subSpecialty: "Cardiology Specialist & General Medicine",
+        rating: "4.8",
+        reviewCount: 124,
+        degrees: "MD, FACC, MBBS",
+        experience: "15+ Years Exp.",
+        languages: "English, Spanish",
+        fee: "₹1550",
+        numericFee: "150",
+        location: "Downtown Medical Center, Suite 402",
+        image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400",
+        about: "Dr. Sarah Jenkins is a board-certified physician with extensive experience in internal medicine, preventative care, and cardiovascular health. She is dedicated to patient-centered care, emphasizing wellness, lifestyle modifications, and evidence-based treatments.",
+        slots: {
+          "MON": ["09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "02:00 PM"],
+          "TUE": ["10:00 AM", "11:30 AM", "01:00 PM", "03:00 PM", "04:30 PM"],
+          "WED": ["09:00 AM", "11:00 AM", "02:30 PM", "04:00 PM"]
+        },
+        reviews: [
+          {
+            name: "Michael T.",
+            date: "2 days ago",
+            rating: 5,
+            comment: "Extremely knowledgeable and took the time to explain everything clearly. Highly recommend Dr. Jenkins."
+          },
+          {
+            name: "Sarah L.",
+            date: "1 week ago",
+            rating: 5,
+            comment: "Very professional office environment. The wait time was minimal and the consultation was thorough."
+          }
+        ]
+      },
+      "michael-chen": {
+        id: "michael-chen",
+        name: "Dr. Michael Chen",
+        specialty: "Cardiologist",
+        subSpecialty: "Interventional & Clinical Cardiology",
+        rating: "4.9",
+        reviewCount: 89,
+        degrees: "MD, FESC, Heart Specialist",
+        experience: "20+ Years Exp.",
+        languages: "English, Mandarin",
+        fee: "₹1800",
+        numericFee: "180",
+        location: "Westside Cardiac & Neuro Clinic, 3rd Floor",
+        image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400",
+        about: "Dr. Michael Chen is a senior cardiologist specializing in cardiovascular disorders, angioplasty, hypertension control, and cardiac health management with over two decades of clinical experience.",
+        slots: {
+          "MON": ["10:00 AM", "11:00 AM", "02:30 PM", "04:00 PM"],
+          "TUE": ["09:30 AM", "10:30 AM", "01:30 PM", "03:30 PM"],
+          "WED": ["11:00 AM", "12:00 PM", "03:00 PM", "05:00 PM"]
+        },
+        reviews: [
+          {
+            name: "David K.",
+            date: "3 days ago",
+            rating: 5,
+            comment: "Dr. Chen saved my father's life with his accurate diagnosis and prompt treatment. Truly world-class physician."
+          },
+          {
+            name: "Anita R.",
+            date: "2 weeks ago",
+            rating: 5,
+            comment: "Calm, reassuring, and extremely thorough during consultations. Answered all our family's concerns with great patience."
+          }
+        ]
+      },
+      "emily-torres": {
+        id: "emily-torres",
+        name: "Dr. Emily Torres",
+        specialty: "Dentist",
+        subSpecialty: "Cosmetic & Implant Dentistry",
+        rating: "4.7",
+        reviewCount: 210,
+        degrees: "DDS, Cosmetic Dentistry Specialist",
+        experience: "8 Years Exp.",
+        languages: "English, Spanish",
+        fee: "₹1200",
+        numericFee: "120",
+        location: "SkinCare & Dental Associates, Suite 105",
+        image: "https://images.unsplash.com/photo-1594824813684-256515c0e447?auto=format&fit=crop&q=80&w=400",
+        about: "Dr. Emily Torres is a compassionate dental surgeon providing gentle, state-of-the-art care including root canals, dental crowns, teeth whitening, veneers, and preventive dental care.",
+        slots: {
+          "MON": ["09:00 AM", "10:00 AM", "11:30 AM", "02:00 PM"],
+          "TUE": ["11:00 AM", "01:00 PM", "03:00 PM", "04:30 PM"],
+          "WED": ["09:30 AM", "10:30 AM", "02:30 PM"]
+        },
+        reviews: [
+          {
+            name: "Jessica M.",
+            date: "1 day ago",
+            rating: 5,
+            comment: "Gentle and completely pain-free procedure! Dr. Torres made me feel completely comfortable throughout my root canal."
+          },
+          {
+            name: "Alex B.",
+            date: "5 days ago",
+            rating: 5,
+            comment: "Best dental experience I've had. My smile looks incredible after the cosmetic whitening!"
+          }
+        ]
+      },
+      "robert-hayes": {
+        id: "robert-hayes",
+        name: "Dr. Robert Hayes",
+        specialty: "Dermatologist",
+        subSpecialty: "Clinical & Laser Dermatology",
+        rating: "4.7",
+        reviewCount: 150,
+        degrees: "MD, FAAD (Dermatology)",
+        experience: "20+ Years Exp.",
+        languages: "English, French",
+        fee: "₹2000",
+        numericFee: "200",
+        location: "City General Hospital & Dermatology Wing",
+        image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=400",
+        about: "Dr. Robert Hayes is a premier dermatologist specializing in advanced skin therapies, acne treatments, eczema, psoriasis management, skin cancer screening, and cosmetic dermatology.",
+        slots: {
+          "MON": ["11:00 AM", "12:00 PM", "03:00 PM", "05:00 PM"],
+          "TUE": ["09:00 AM", "10:30 AM", "02:00 PM", "04:00 PM"],
+          "WED": ["10:00 AM", "11:30 AM", "01:30 PM"]
+        },
+        reviews: [
+          {
+            name: "Priya S.",
+            date: "4 days ago",
+            rating: 5,
+            comment: "My severe skin breakout cleared up within three weeks under Dr. Hayes' treatment plan. Highly recommended!"
+          },
+          {
+            name: "James W.",
+            date: "1 month ago",
+            rating: 5,
+            comment: "Very detailed explanations and practical skin care routines tailored to my daily lifestyle."
+          }
+        ]
+      },
+      "marcus-vance": {
+        id: "marcus-vance",
+        name: "Dr. Marcus Vance",
+        specialty: "Neurologist",
+        subSpecialty: "Neuro-Rehabilitation & Epilepsy Specialist",
+        rating: "4.9",
+        reviewCount: 165,
+        degrees: "MD, DM (Neurology), FAAN",
+        experience: "14 Years Exp.",
+        languages: "English, German",
+        fee: "₹2900",
+        numericFee: "190",
+        location: "St. Jude Medical Institute, Neuro Center",
+        image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400",
+        about: "Dr. Marcus Vance is a renowned consultant neurologist with expertise in chronic migraine therapies, epilepsy care, peripheral neuropathy, and neurological movement disorders.",
+        slots: {
+          "MON": ["09:30 AM", "11:00 AM", "02:00 PM", "04:00 PM"],
+          "TUE": ["10:00 AM", "12:00 PM", "03:00 PM"],
+          "WED": ["09:00 AM", "11:30 AM", "02:30 PM", "05:00 PM"]
+        },
+        reviews: [
+          {
+            name: "Karen B.",
+            date: "6 days ago",
+            rating: 5,
+            comment: "Dr. Vance helped manage my chronic migraines when no other treatments worked. Extremely empathetic physician."
+          },
+          {
+            name: "Robert C.",
+            date: "2 weeks ago",
+            rating: 5,
+            comment: "Deeply knowledgeable about neurological health. The consultation was reassuring and detailed."
+          }
+        ]
+      },
+      "elena-patel": {
+        id: "elena-patel",
+        name: "Dr. Elena Patel",
+        specialty: "Orthopedic Surgeon",
+        subSpecialty: "Joint Replacement & Sports Injury",
+        rating: "4.8",
+        reviewCount: 142,
+        degrees: "MS (Ortho), Fellowship in Joint Replacement",
+        experience: "10 Years Exp.",
+        languages: "English, Hindi, Gujarati",
+        fee: "₹1600",
+        numericFee: "160",
+        location: "OrthoHealth Care & Sports Rehabilitation",
+        image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400",
+        about: "Dr. Elena Patel is a renowned orthopedic surgeon specializing in knee and hip joint replacements, ACL reconstructions, arthroscopic procedures, and sports medicine.",
+        slots: {
+          "MON": ["10:00 AM", "11:30 AM", "01:30 PM", "03:30 PM"],
+          "TUE": ["09:00 AM", "10:30 AM", "02:30 PM", "04:30 PM"],
+          "WED": ["11:00 AM", "01:00 PM", "04:00 PM"]
+        },
+        reviews: [
+          {
+            name: "Suresh K.",
+            date: "3 days ago",
+            rating: 5,
+            comment: "Excellent ACL surgery recovery thanks to Dr. Patel's skilled surgery and rehab guidance."
+          },
+          {
+            name: "Maria G.",
+            date: "1 week ago",
+            rating: 5,
+            comment: "Very polite doctor who explains bone & joint health in easy-to-understand terms. Highly skilled."
+          }
+        ]
+      }
+    };
+
+    // Aliases
+    doctorsData["1"] = doctorsData["sarah-jenkins"];
+    doctorsData["2"] = doctorsData["michael-chen"];
+    doctorsData["3"] = doctorsData["emily-torres"];
+    doctorsData["4"] = doctorsData["robert-hayes"];
+    doctorsData["5"] = doctorsData["marcus-vance"];
+    doctorsData["6"] = doctorsData["elena-patel"];
+
+    let currentDoctor = doctorsData["sarah-jenkins"];
+    let selectedDay = "MON";
+    let selectedTime = "";
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const doctorId = (params.get('id') || '').toLowerCase().trim();
+      const doctorDocParam = (params.get('doc') || '').toLowerCase().trim();
+
+      if (doctorId && doctorsData[doctorId]) {
+        currentDoctor = doctorsData[doctorId];
+      } else if (doctorDocParam) {
+        const foundKey = Object.keys(doctorsData).find(key => {
+          const doc = doctorsData[key];
+          return doc.name.toLowerCase().includes(doctorDocParam) || doctorDocParam.includes(key);
+        });
+        if (foundKey) currentDoctor = doctorsData[foundKey];
+      }
+
+      renderDoctorProfile(currentDoctor);
+    });
+
+    function renderDoctorProfile(doctor) {
+      document.title = `DocBook - ${doctor.name} Profile`;
+      document.getElementById('doc-name').textContent = doctor.name;
+      document.getElementById('doc-specialty').textContent = doctor.subSpecialty || doctor.specialty;
+      document.getElementById('doc-img').src = doctor.image;
+      document.getElementById('doc-img').alt = doctor.name;
+      document.getElementById('doc-rating').textContent = doctor.rating;
+      document.getElementById('doc-reviews-count').textContent = `(${doctor.reviewCount})`;
+      document.getElementById('doc-degrees').textContent = doctor.degrees;
+      document.getElementById('doc-exp').innerHTML = `<i class="fa-solid fa-clock" style="margin-right: 4px; color: #94a3b8;"></i>${doctor.experience}`;
+      document.getElementById('doc-languages').innerHTML = `<i class="fa-solid fa-language" style="margin-right: 4px; color: #94a3b8;"></i>${doctor.languages}`;
+      document.getElementById('doc-location').textContent = doctor.location;
+      document.getElementById('doc-fee').textContent = doctor.fee;
+      document.getElementById('doc-about').textContent = doctor.about;
+
+      const bookUrl = `book-appointment.html?doc=${encodeURIComponent(doctor.name)}&spec=${encodeURIComponent(doctor.specialty)}&fee=${doctor.numericFee}`;
+      document.getElementById('doc-book-btn').href = bookUrl;
+
+      // Render slots for default active date (MON)
+      renderTimeSlots(selectedDay);
+
+      // Render reviews
+      renderReviews(doctor.reviews);
+    }
+
+    function selectDate(day, btnElement) {
+      selectedDay = day;
+      const dateBtns = document.querySelectorAll('.date-btn');
+      dateBtns.forEach(btn => btn.classList.remove('active'));
+      if (btnElement) btnElement.classList.add('active');
+
+      renderTimeSlots(day);
+    }
+
+    function renderTimeSlots(day) {
+      const slotsContainer = document.getElementById('time-slots-container');
+      const daySlots = (currentDoctor.slots && currentDoctor.slots[day]) || ["09:00 AM", "10:00 AM", "11:30 AM", "02:00 PM"];
+      
+      slotsContainer.innerHTML = daySlots.map((slot, index) => {
+        const isActive = index === 0 ? 'active' : '';
+        if (index === 0) selectedTime = slot;
+        return `<button type="button" class="time-btn ${isActive}" onclick="selectSlot('${slot}', this)">${slot}</button>`;
+      }).join('');
+    }
+
+    function selectSlot(slot, btnElement) {
+      selectedTime = slot;
+      const slotBtns = document.querySelectorAll('.time-btn');
+      slotBtns.forEach(btn => btn.classList.remove('active'));
+      if (btnElement) btnElement.classList.add('active');
+
+      const bookUrl = `book-appointment.html?doc=${encodeURIComponent(currentDoctor.name)}&spec=${encodeURIComponent(currentDoctor.specialty)}&fee=${currentDoctor.numericFee}&time=${encodeURIComponent(slot)}`;
+      document.getElementById('doc-book-btn').href = bookUrl;
+    }
+
+    function renderReviews(reviews) {
+      const container = document.getElementById('patient-reviews-container');
+      if (!reviews || reviews.length === 0) {
+        container.innerHTML = '<p style="font-size: 12px; color: #64748b;">No reviews yet for this doctor.</p>';
+        return;
+      }
+
+      container.innerHTML = reviews.map(rev => {
+        const stars = Array(rev.rating).fill('<i class="fa-solid fa-star"></i>').join('');
+        return `
+          <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <div style="display: flex; color: #fbbf24; font-size: 12px; gap: 2px;">
+                  ${stars}
+                </div>
+                <span style="font-size: 11px; color: #94a3b8;">${rev.date}</span>
+              </div>
+              <p style="font-size: 12px; color: #475569; line-height: 1.5; font-style: italic;">
+                "${rev.comment}"
+              </p>
+            </div>
+            <p style="font-size: 12px; font-weight: 700; color: #0f172a; margin-top: 12px;">— ${rev.name}</p>
+          </div>
+        `;
+      }).join('');
+    }
+  </script>
+</body>
+
+</html>

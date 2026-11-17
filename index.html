@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocBook - Find a Doctor & Book an Appointment</title>
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    /* Layout Containers */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .container-narrow {
+      width: 100%;
+      max-width: 896px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .main-content {
+      flex: 1;
+    }
+
+    /* Header & Navbar */
+    .navbar {
+      background-color: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .navbar-content {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background-color: #0d9488;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: #0f172a;
+    }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 24px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    @media (min-width: 768px) {
+      .nav-links {
+        display: flex;
+      }
+    }
+
+    .nav-link {
+      color: #475569;
+      transition: color 0.15s ease;
+    }
+
+    .nav-link:hover {
+      color: #0d9488;
+    }
+
+    .nav-link.active {
+      color: #0d9488;
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (min-width: 640px) {
+      .nav-actions {
+        gap: 12px;
+      }
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-dark {
+      background-color: #18181b;
+      color: #ffffff;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-dark:hover {
+      background-color: #27272a;
+    }
+
+    .btn-light {
+      background-color: #f1f5f9;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    .btn-light:hover {
+      background-color: #e2e8f0;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      background: linear-gradient(180deg, #ffffff 0%, rgba(248, 250, 252, 0.6) 100%);
+      border-bottom: 1px solid #e2e8f0;
+      padding: 64px 0;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .hero-title {
+        font-size: 36px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .hero-title {
+        font-size: 48px;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: #64748b;
+      max-width: 672px;
+      margin: 0 auto 32px auto;
+      line-height: 1.6;
+    }
+
+    .hero-search-form {
+      background-color: #ffffff;
+      padding: 8px;
+      border-radius: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      max-width: 672px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    @media (min-width: 640px) {
+      .hero-search-form {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    .hero-search-input-wrap {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      padding: 0 12px;
+      width: 100%;
+    }
+
+    .hero-search-input {
+      width: 100%;
+      padding: 8px 0;
+      font-size: 14px;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #1e293b;
+    }
+
+    /* Specialty Cards */
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .specialty-card {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+
+    .specialty-card:hover {
+      border-color: #14b8a6;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .specialty-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .specialty-icon-teal {
+      background-color: #f0fdf4;
+      color: #0d9488;
+    }
+
+    .specialty-icon-blue {
+      background-color: #eff6ff;
+      color: #2563eb;
+    }
+
+    .specialty-icon-rose {
+      background-color: #fff1f2;
+      color: #e11d48;
+    }
+
+    .specialty-icon-amber {
+      background-color: #fffbeb;
+      color: #d97706;
+    }
+
+    /* Doctor Cards */
+    .grid-doctors {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .grid-doctors {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      padding: 24px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      transition: box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid transparent;
+    }
+
+    .badge-emerald {
+      background-color: #ecfdf5;
+      color: #047857;
+      border-color: #a7f3d0;
+    }
+
+    .badge-blue {
+      background-color: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .badge-purple {
+      background-color: #faf5ff;
+      color: #7e22ce;
+      border-color: #e9d5ff;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      padding: 40px 0;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .footer-content {
+        flex-direction: row;
+      }
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .footer-links a:hover {
+      color: #0f172a;
+    }
+
+    .copyright {
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #f1f5f9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PUBLIC HEADER / NAVBAR -->
+  <header class="navbar">
+    <div class="container navbar-content">
+      <div style="display: flex; align-items: center; gap: 32px;">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <span class="logo-text">DocBook</span>
+        </a>
+
+        <nav class="nav-links">
+          <a href="index.html" class="nav-link active">Home</a>
+          <a href="doctors.html" class="nav-link">Doctors</a>
+          <a href="patient-dashboard.html" class="nav-link">Appointments</a>
+        </nav>
+      </div>
+
+      <div class="nav-actions">
+        <a href="patient-dashboard.html" class="btn btn-light btn-sm">
+          <i class="fa-regular fa-user"></i> Patient Portal
+        </a>
+        <a href="admin-dashboard.html" class="btn btn-light btn-sm">
+          <i class="fa-solid fa-shield-halved"></i> Admin Panel
+        </a>
+        <a href="login.html" class="btn btn-dark">
+          Login
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <main class="main-content">
+    <section class="hero-section">
+      <div class="container-narrow">
+        <h1 class="hero-title">
+          Find a Doctor & Book an Appointment
+        </h1>
+        <p class="hero-subtitle">
+          Easily find top-rated doctors in your area, view their profiles, and book appointments instantly online.
+        </p>
+
+        <!-- Search Bar -->
+        <form action="doctors.html" method="GET" class="hero-search-form">
+          <div class="hero-search-input-wrap">
+            <i class="fa-solid fa-magnifying-glass" style="color: #94a3b8; margin-right: 12px; font-size: 14px;"></i>
+            <input name="search" type="text" placeholder="Search by doctor name or specialty..."
+              class="hero-search-input">
+          </div>
+          <button type="submit" class="btn btn-dark" style="padding: 12px 32px; border-radius: 16px;">
+            <span>Search</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- BROWSE BY SPECIALITY -->
+    <section class="container" style="padding-top: 48px; padding-bottom: 48px;">
+      <div style="text-align: center; margin-bottom: 32px;">
+        <h2 style="font-size: 20px; font-weight: 700; color: #0f172a;">Browse by Speciality</h2>
+      </div>
+
+      <div class="grid-4" style="max-width: 896px; margin: 0 auto;">
+        <!-- General Physician -->
+        <a href="doctors.html?specialty=General+Physician" class="specialty-card">
+          <div class="specialty-icon specialty-icon-teal">
+            <i class="fa-solid fa-user-doctor"></i>
+          </div>
+          <span style="font-size: 14px; font-weight: 700; color: #0f172a;">General Physician</span>
+          <span style="font-size: 12px; color: #94a3b8; margin-top: 2px;">34 Doctors</span>
+        </a>
+
+        <!-- Dentist -->
+        <a href="doctors.html?specialty=Dentist" class="specialty-card">
+          <div class="specialty-icon specialty-icon-blue">
+            <i class="fa-solid fa-tooth"></i>
+          </div>
+          <span style="font-size: 14px; font-weight: 700; color: #0f172a;">Dentist</span>
+          <span style="font-size: 12px; color: #94a3b8; margin-top: 2px;">1 Doctors</span>
+        </a>
+
+        <!-- Cardiologist -->
+        <a href="doctors.html?specialty=Cardiologist" class="specialty-card">
+          <div class="specialty-icon specialty-icon-rose">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
+          <span style="font-size: 14px; font-weight: 700; color: #0f172a;">Cardiologist</span>
+          <span style="font-size: 12px; color: #94a3b8; margin-top: 2px;">1 Doctors</span>
+        </a>
+
+        <!-- Dermatologist -->
+        <a href="doctors.html?specialty=Dermatologist" class="specialty-card">
+          <div class="specialty-icon specialty-icon-amber">
+            <i class="fa-solid fa-hand-dots"></i>
+          </div>
+          <span style="font-size: 14px; font-weight: 700; color: #0f172a;">Dermatologist</span>
+          <span style="font-size: 12px; color: #94a3b8; margin-top: 2px;">1 Doctors</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- TOP DOCTORS TO BOOK -->
+    <section class="container" style="padding-top: 32px; padding-bottom: 64px;">
+      <div
+        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; max-width: 1024px; margin-left: auto; margin-right: auto;">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 700; color: #0f172a;">Top Doctors to Book</h2>
+          <p style="font-size: 12px; color: #64748b; margin-top: 2px;">Highly requested specialists with proven track
+            records</p>
+        </div>
+        <a href="doctors.html"
+          style="font-size: 12px; font-weight: 600; color: #0f172a; display: flex; align-items: center; gap: 6px;">
+          <span>View All</span>
+          <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i>
+        </a>
+      </div>
+
+      <!-- 5 Cards -->
+      <div class="grid-doctors" style="max-width: 1024px; margin: 0 auto;">
+
+        <!-- Card 1: Dr. Sarah Jenkins -->
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+              <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200"
+                alt="Dr. Sarah Jenkins"
+                style="width: 64px; height: 64px; border-radius: 9999px; object-fit: cover; border: 2px solid rgba(13, 148, 136, 0.2);">
+              <div>
+                <a href="doctor-profile.html?id=sarah-jenkins"
+                  style="font-weight: 700; color: #0f172a; font-size: 14px; line-height: 1.3;">Dr. Sarah Jenkins</a>
+                <p style="font-size: 12px; color: #0d9488; font-weight: 500;">General Physician</p>
+                <div
+                  style="display: flex; align-items: center; gap: 4px; font-size: 12px; color: #475569; margin-top: 4px;">
+                  <i class="fa-solid fa-star" style="color: #fbbf24;"></i>
+                  <span style="font-weight: 700; color: #0f172a;">4.8</span>
+                  <span style="color: #94a3b8;">(124 Reviews)</span>
+                </div>
+              </div>
+            </div>
+
+            <div
+              style="background-color: #f8fafc; border-radius: 12px; padding: 12px; margin-bottom: 20px; font-size: 12px; color: #475569; display: flex; justify-content: space-between; align-items: center;">
+              <span><i class="fa-solid fa-briefcase" style="color: #94a3b8; margin-right: 6px;"></i>15 Years Exp.</span>
+              <span class="badge badge-emerald">Next Avail: Today</span>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <a href="book-appointment.html?doc=Dr.+Sarah+Jenkins&spec=General+Physician&fee=150"
+              class="btn btn-dark btn-block">
+              Book Appointment
+            </a>
+            <a href="doctor-profile.html?id=sarah-jenkins"
+              style="display: block; text-align: center; padding: 4px; font-size: 12px; color: #64748b;">
+              View Profile
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 2: Dr. Michael Chen -->
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+              <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=200"
+                alt="Dr. Michael Chen"
+                style="width: 64px; height: 64px; border-radius: 9999px; object-fit: cover; border: 2px solid rgba(13, 148, 136, 0.2);">
+              <div>
+                <a href="doctor-profile.html?id=michael-chen"
+                  style="font-weight: 700; color: #0f172a; font-size: 14px; line-height: 1.3;">Dr. Michael Chen</a>
+                <p style="font-size: 12px; color: #0d9488; font-weight: 500;">Cardiologist</p>
+                <div
+                  style="display: flex; align-items: center; gap: 4px; font-size: 12px; color: #475569; margin-top: 4px;">
+                  <i class="fa-solid fa-star" style="color: #fbbf24;"></i>
+                  <span style="font-weight: 700; color: #0f172a;">4.9</span>
+                  <span style="color: #94a3b8;">(89 Reviews)</span>
+                </div>
+              </div>
+            </div>
+
+            <div
+              style="background-color: #f8fafc; border-radius: 12px; padding: 12px; margin-bottom: 20px; font-size: 12px; color: #475569; display: flex; justify-content: space-between; align-items: center;">
+              <span><i class="fa-solid fa-briefcase" style="color: #94a3b8; margin-right: 6px;"></i>20 Years Exp.</span>
+              <span class="badge badge-blue">Next Avail: Tomorrow</span>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <a href="book-appointment.html?doc=Dr.+Michael+Chen&spec=Cardiologist&fee=180"
+              class="btn btn-dark btn-block">
+              Book Appointment
+            </a>
+            <a href="doctor-profile.html?id=michael-chen"
+              style="display: block; text-align: center; padding: 4px; font-size: 12px; color: #64748b;">
+              View Profile
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 3: Dr. Emily Torres -->
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+              <img src="https://images.unsplash.com/photo-1594824813684-256515c0e447?auto=format&fit=crop&q=80&w=200"
+                alt="Dr. Emily Torres"
+                style="width: 64px; height: 64px; border-radius: 9999px; object-fit: cover; border: 2px solid rgba(13, 148, 136, 0.2);">
+              <div>
+                <a href="doctor-profile.html?id=emily-torres"
+                  style="font-weight: 700; color: #0f172a; font-size: 14px; line-height: 1.3;">Dr. Emily Torres</a>
+                <p style="font-size: 12px; color: #0d9488; font-weight: 500;">Dentist</p>
+                <div
+                  style="display: flex; align-items: center; gap: 4px; font-size: 12px; color: #475569; margin-top: 4px;">
+                  <i class="fa-solid fa-star" style="color: #fbbf24;"></i>
+                  <span style="font-weight: 700; color: #0f172a;">4.7</span>
+                  <span style="color: #94a3b8;">(210 Reviews)</span>
+                </div>
+              </div>
+            </div>
+
+            <div
+              style="background-color: #f8fafc; border-radius: 12px; padding: 12px; margin-bottom: 20px; font-size: 12px; color: #475569; display: flex; justify-content: space-between; align-items: center;">
+              <span><i class="fa-solid fa-briefcase" style="color: #94a3b8; margin-right: 6px;"></i>8 Years Exp.</span>
+              <span class="badge badge-purple">Next Avail: Mon, 14th</span>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <a href="book-appointment.html?doc=Dr.+Emily+Torres&spec=Dentist&fee=120" class="btn btn-dark btn-block">
+              Book Appointment
+            </a>
+            <a href="doctor-profile.html?id=emily-torres"
+              style="display: block; text-align: center; padding: 4px; font-size: 12px; color: #64748b;">
+              View Profile
+            </a>
+          </div>
+        </div>
+
+
+
+      </div>
+    </section>
+  </main>
+
+  <!-- PUBLIC FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div
+            style="width: 28px; height: 28px; border-radius: 8px; background-color: #0d9488; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <span
+            style="font-weight: 800; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; color: #0f172a;">DOCBOOK</span>
+        </div>
+
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Support</a>
+        </div>
+      </div>
+
+      <div class="copyright">
+        &copy; 2026 DocBook Appointment System. Academic Project.
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

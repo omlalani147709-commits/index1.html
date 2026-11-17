@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocBook - Admin Dashboard Overview</title>
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .main-content {
+      flex: 1;
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    @media (min-width: 1024px) {
+      .dashboard-layout {
+        grid-template-columns: 280px 1fr;
+      }
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #475569;
+      transition: background-color 0.15s ease;
+    }
+
+    .sidebar-link:hover {
+      background-color: #f1f5f9;
+    }
+
+    .sidebar-link.active {
+      background-color: #0f172a;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .sidebar-link.text-rose {
+      color: #e11d48;
+    }
+
+    .sidebar-link.text-rose:hover {
+      background-color: #fff1f2;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid transparent;
+    }
+
+    .badge-emerald {
+      background-color: #ecfdf5;
+      color: #047857;
+      border-color: #a7f3d0;
+    }
+
+    .badge-blue {
+      background-color: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .badge-rose {
+      background-color: #fff1f2;
+      color: #be123c;
+      border-color: #fecdd3;
+    }
+
+    .badge-amber {
+      background-color: #fffbeb;
+      color: #b45309;
+      border-color: #fde68a;
+    }
+
+    .badge-purple {
+      background-color: #faf5ff;
+      color: #7e22ce;
+      border-color: #e9d5ff;
+    }
+
+    .table-container {
+      background-color: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .table {
+      width: 100%;
+      text-align: left;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .table th {
+      background-color: #f8fafc;
+      color: #64748b;
+      font-weight: 600;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    .table td {
+      padding: 14px 20px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+
+    .table tr:hover {
+      background-color: rgba(248, 250, 252, 0.5);
+    }
+
+    .footer {
+      background-color: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      padding: 24px 0;
+      margin-top: auto;
+      text-align: center;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ADMIN PANEL LAYOUT -->
+  <div class="container main-content">
+    <div class="dashboard-layout">
+
+      <!-- Admin Sidebar -->
+      <aside>
+        <div class="card">
+          <div style="margin-bottom: 24px;">
+            <span
+              style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #e11d48; display: block;">Admin
+              Panel</span>
+            <p style="font-size: 12px; color: #64748b;">System Oversight</p>
+          </div>
+
+          <nav style="display: flex; flex-direction: column; gap: 6px;">
+            <a href="admin-dashboard.html" class="sidebar-link active">
+              <i class="fa-solid fa-chart-line" style="width: 16px;"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="admin-doctors.html" class="sidebar-link">
+              <i class="fa-solid fa-user-doctor" style="width: 16px;"></i>
+              <span>Doctors</span>
+            </a>
+            <a href="admin-users.html" class="sidebar-link">
+              <i class="fa-solid fa-users" style="width: 16px;"></i>
+              <span>Users</span>
+            </a>
+            <a href="admin-users.html?tab=appointments" class="sidebar-link">
+              <i class="fa-regular fa-calendar-check" style="width: 16px;"></i>
+              <span>Appointments</span>
+            </a>
+          </nav>
+
+          <div style="padding-top: 24px; margin-top: 24px; border-top: 1px solid #f1f5f9;">
+            <a href="login.html" class="sidebar-link text-rose">
+              <i class="fa-solid fa-arrow-right-from-bracket" style="width: 16px;"></i>
+              <span>Logout</span>
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Dashboard Content -->
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+
+        <!-- Header -->
+        <div class="card" style="display: flex; align-items: center; justify-content: space-between; padding: 24px;">
+          <div>
+            <h1 style="font-size: 22px; font-weight: 700; color: #0f172a;">Dashboard Overview</h1>
+            <p style="font-size: 12px; color: #64748b; margin-top: 2px;">Welcome back, Admin. Here is today's summary.
+            </p>
+          </div>
+          <div
+            style="width: 40px; height: 40px; border-radius: 9999px; background-color: #0f172a; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px;">
+            AD
+          </div>
+        </div>
+
+        <!-- 3 Stat Cards -->
+        <div class="grid-3">
+          <div class="card">
+            <div
+              style="display: flex; align-items: center; justify-content: space-between; color: #94a3b8; margin-bottom: 8px;">
+              <span
+                style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">TOTAL
+                DOCTORS</span>
+              <i class="fa-solid fa-user-doctor" style="font-size: 14px; color: #0d9488;"></i>
+            </div>
+            <div style="font-size: 24px; font-weight: 800; color: #0f172a;">142</div>
+            <div style="font-size: 11px; color: #059669; font-weight: 500; margin-top: 4px;">
+              <i class="fa-solid fa-arrow-up"></i> +12 this month
+            </div>
+          </div>
+
+          <div class="card">
+            <div
+              style="display: flex; align-items: center; justify-content: space-between; color: #94a3b8; margin-bottom: 8px;">
+              <span
+                style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">TOTAL
+                USERS</span>
+              <i class="fa-solid fa-users" style="font-size: 14px; color: #2563eb;"></i>
+            </div>
+            <div style="font-size: 24px; font-weight: 800; color: #0f172a;">8,405</div>
+            <div style="font-size: 11px; color: #059669; font-weight: 500; margin-top: 4px;">
+              <i class="fa-solid fa-arrow-up"></i> +340 this month
+            </div>
+          </div>
+
+          <div class="card">
+            <div
+              style="display: flex; align-items: center; justify-content: space-between; color: #94a3b8; margin-bottom: 8px;">
+              <span
+                style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">TOTAL
+                APPOINTMENTS</span>
+              <i class="fa-solid fa-calendar-check" style="font-size: 14px; color: #4f46e5;"></i>
+            </div>
+            <div style="font-size: 24px; font-weight: 800; color: #0f172a;">1,204</div>
+            <div style="font-size: 11px; color: #059669; font-weight: 500; margin-top: 4px;">
+              <i class="fa-solid fa-arrow-up"></i> +85 this week
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Appointments Table -->
+        <div class="table-container">
+          <div
+            style="padding: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <h2 style="font-weight: 700; color: #0f172a; font-size: 14px;">Recent Appointments</h2>
+              <p style="font-size: 12px; color: #94a3b8;">Live feed of scheduled consultations</p>
+            </div>
+            <a href="admin-users.html?tab=appointments" style="font-size: 12px; font-weight: 600; color: #0d9488;">
+              View All
+            </a>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>PATIENT</th>
+                  <th>DOCTOR</th>
+                  <th>DATE</th>
+                  <th>TIME</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight: 600; color: #0f172a;">Emily Chen</td>
+                  <td style="color: #475569;">Dr. Sarah Jenkins</td>
+                  <td style="color: #64748b;">Oct 24, 2024</td>
+                  <td style="color: #64748b;">09:00 AM</td>
+                  <td>
+                    <span class="badge badge-emerald">Completed</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; color: #0f172a;">Michael Rossi</td>
+                  <td style="color: #475569;">Dr. Michael Chen</td>
+                  <td style="color: #64748b;">Oct 24, 2024</td>
+                  <td style="color: #64748b;">10:30 AM</td>
+                  <td>
+                    <span class="badge badge-blue">Confirmed</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; color: #0f172a;">Aisha Patel</td>
+                  <td style="color: #475569;">Dr. Emily Torres</td>
+                  <td style="color: #64748b;">Oct 24, 2024</td>
+                  <td style="color: #64748b;">11:15 AM</td>
+                  <td>
+                    <span class="badge badge-rose">Cancelled</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; color: #0f172a;">David Kim</td>
+                  <td style="color: #475569;">Dr. Robert Hayes</td>
+                  <td style="color: #64748b;">Oct 24, 2024</td>
+                  <td style="color: #64748b;">02:00 PM</td>
+                  <td>
+                    <span class="badge badge-amber">Pending</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; color: #0f172a;">Sophia Martinez</td>
+                  <td style="color: #475569;">Dr. Marcus Vance</td>
+                  <td style="color: #64748b;">Oct 25, 2024</td>
+                  <td style="color: #64748b;">03:30 PM</td>
+                  <td>
+                    <span class="badge badge-blue">Confirmed</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; color: #0f172a;">James Taylor</td>
+                  <td style="color: #475569;">Dr. Elena Patel</td>
+                  <td style="color: #64748b;">Oct 25, 2024</td>
+                  <td style="color: #64748b;">04:15 PM</td>
+                  <td>
+                    <span class="badge badge-purple">In Progress</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      &copy; 2026 DocBook Appointment System. Academic Project.
+    </div>
+  </footer>
+
+</body>
+
+</html>
